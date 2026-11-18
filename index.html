@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กิจกรรมการเรียนรู้: สิ่งมีชีวิตและสิ่งไม่มีชีวิต (ม.4)</title>
+    <!-- Tailwind CSS สำหรับการออกแบบ UI ที่สะอาดและทันสมัย -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-100 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Header ส่วนหัวของเว็บแอป -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-emerald-100 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div>
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">วิทยาศาสตร์ ม.4</span>
+                <h1 class="text-lg font-bold text-slate-900 mt-0.5">สิ่งมีชีวิตและสิ่งไม่มีชีวิตตามที่อยู่อาศัย</h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="openTeacherModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium transition flex items-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    โหมดครู
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-2xl w-full mx-auto p-4 md:p-6 flex-grow flex flex-col justify-center">
+
+        <!-- หน้าที่ 1: ลงทะเบียนเลขที่นักเรียน -->
+        <section id="view-login" class="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-emerald-100 transition-all duration-300">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl mx-auto flex items-center justify-center text-2xl font-bold mb-3 shadow-inner">🌱</div>
+                <h2 class="text-2xl font-bold text-slate-800">ยินดีต้อนรับสู่บทเรียนออนไลน์</h2>
+                <p class="text-slate-500 text-sm mt-1">กรอกเลขที่ของคุณเพื่อรับชุดข้อความและสถานการณ์เฉพาะบุคคล</p>
+            </div>
+            
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">เลขที่นักเรียน (1 - 40)</label>
+                    <input type="number" id="student-id-input" min="1" max="40" required 
+                           class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-center text-xl font-bold tracking-wider"
+                           placeholder="เช่น 15">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg shadow-emerald-600/20 transition duration-200 flex items-center justify-center gap-2">
+                    เริ่มทำกิจกรรม 
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </form>
+            <div class="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">
+                ระบบใช้ Deterministic PRNG สร้างชุดโจทย์เฉพาะเลขที่ของคุณ • เวลาทำกิจกรรม 30 นาที
+            </div>
+        </section>
+
+        <!-- หน้าที่ 2: ทำแบบทดสอบ -->
+        <section id="view-quiz" class="hidden bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-emerald-100">
+            <!-- Progress Bar & Info -->
+            <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-500">
+                <span id="quiz-progress-text">ข้อที่ 1 จาก 5</span>
+                <span id="student-badge" class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200">เลขที่: -</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 20%"></div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="mb-6">
+                <span id="question-category" class="text-xs font-bold text-teal-600 uppercase tracking-wider bg-teal-50 px-2 py-1 rounded">หมวดหมู่</span>
+                <h3 id="question-title" class="text-lg font-bold text-slate-800 mt-2">คำถามจะแสดงที่นี่</h3>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- ตัวเลือกจะถูกเรนเดอร์ด้วย JavaScript -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                <button id="btn-prev" onclick="prevQuestion()" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-sm transition disabled:opacity-40 disabled:cursor-not-allowed">
+                    ย้อนกลับ
+                </button>
+                <button id="btn-next" onclick="nextQuestion()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2 rounded-lg text-sm shadow-md shadow-emerald-600/20 transition">
+                    ถัดไป
+                </button>
+            </div>
+        </section>
+
+        <!-- หน้าที่ 3: ผลคะแนนและเฉลย -->
+        <section id="view-result" class="hidden bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-emerald-100 text-center">
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-3xl mx-auto flex items-center justify-center text-4xl mb-4 shadow-inner" id="result-emoji">🎉</div>
+            <h2 class="text-2xl font-bold text-slate-800">สรุปผลการทดสอบ</h2>
+            <p class="text-slate-500 text-sm mt-1" id="result-student-info">เลขที่ -</p>
+
+            <div class="my-6 p-6 bg-slate-50 rounded-2xl border border-slate-100 inline-block w-full max-w-xs">
+                <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">คะแนนรวมที่คุณทำได้</div>
+                <div class="text-5xl font-black text-emerald-600 mt-2"><span id="score-val">0</span><span class="text-2xl text-slate-400 font-normal">/5</span></div>
+            </div>
+
+            <div id="review-container" class="text-left space-y-4 mb-8 max-h-80 overflow-y-auto pr-2">
+                <!-- รายละเอียดเฉลยแต่ละข้อ -->
+            </div>
+
+            <div class="flex gap-3 justify-center">
+                <button onclick="restartQuiz()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-6 py-3 rounded-xl text-sm transition shadow-sm">
+                    ทำใหม่อีกครั้ง
+                </button>
+                <button onclick="openTeacherModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl text-sm transition shadow-md shadow-emerald-600/20">
+                    เปิดดูโจทย์-เฉลยโหมดครู
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: โหมดครูตรวจสอบ -->
+    <div id="teacher-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-100">
+            <div class="p-4 md:p-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800">แผงควบคุมและตรวจสอบ (โหมดครู)</h3>
+                    <p class="text-xs text-slate-500">ตรวจสอบชุดโจทย์และเฉลยรายเลขที่นักเรียน (1–40)</p>
+                </div>
+                <button onclick="closeTeacherModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="p-4 md:p-6 overflow-y-auto space-y-4 flex-grow">
+                <div class="flex gap-3 items-end bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                    <div class="flex-grow">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">เลือกดูเลขที่นักเรียน:</label>
+                        <input type="number" id="teacher-inspect-id" min="1" max="40" value="1" 
+                               class="w-full px-3 py-2 bg-white rounded-lg border border-slate-200 text-sm font-semibold outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <button onclick="inspectStudentQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm">
+                        โหลดชุดโจทย์
+                    </button>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 flex items-start gap-2">
+                    <svg class="w-4 h-4 text-amber-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <span><strong>หมายเหตุทางเทคนิค:</strong> เนื่องจากเป็น Client-Side Web Application โค้ด JavaScript ทั้งหมดทำงานบนเบราว์เซอร์ จึงไม่สามารถซ่อนเฉลยจากผู้ใช้ที่มีทักษะการตรวจสอบโค้ดได้ 100% โปรดใช้หน้านี้เพื่อตรวจสอบความถูกต้องของชุดโจทย์ก่อนนำไปจัดกิจกรรมจริง</span>
+                </div>
+
+                <div id="teacher-preview-content" class="space-y-4">
+                    <!-- แสดงผลโจทย์และเฉลยของเลขที่ที่เลือก -->
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                <button onclick="closeTeacherModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer เครดิตผู้จัดทำ -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200/60 mt-auto bg-white/40">
+        ผู้สร้าง: ครูอ้อ | โรงเรียน: อนุบาลขุนยวม | กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี ชั้น ม.4
+    </footer>
+
+    <!-- JavaScript Core & Quiz Logic -->
+    <script>
+        // Deterministic PRNG (Mulberry32) สำหรับสุ่มโจทย์เฉพาะเลขที่ตามกลยุทธ์ Hybrid Variation
+        function mulberry32(seed) {
+            return function() {
+                seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+                let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+                t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+
+        // คลังสถานการณ์ต้นแบบ (Base Templates) ทั้ง 5 ข้อ ตามจุดประสงค์สิ่งมีชีวิตและสิ่งไม่มีชีวิตตามที่อยู่อาศัย
+        const questionTemplates = [
+            {
+                id: 1,
+                category: "สิ่งมีชีวิตในแหล่งน้ำจืด",
+                baseQuestion: "นักเรียนสำรวจระบบนิเวศแหล่งน้ำจืดแห่งหนึ่ง พบสิ่งมีชีวิตชนิดหนึ่ง (ตัวแปร: {organism}) อาศัยและหากินอยู่บริเวณนี้ โดยมีลักษณะพึ่งพาปัจจัยความชื้นและอุณหภูมิของน้ำเฉลี่ย {temp} °C สิ่งมีชีวิตดังกล่าวจัดอยู่ในกลุ่มใดตามเกณฑ์การจัดจำแนกสิ่งมีชีวิตและไม่มีชีวิต?",
+                variables: [
+                    { organism: "ปลาตะเพียนขาว", temp: 28 },
+                    { organism: "กุ้งฝอยน้ำจืด", temp: 26 },
+                    { organism: "หอยเชอรี่", temp: 30 },
+                    { organism: "สาหร่ายหางกระรอก", temp: 25 }
+                ],
+                correctOptionIndex: 0,
+                optionsTemplate: [
+                    "เป็นสิ่งมีชีวิต (Living Organism) เพราะมีการตอบสนองต่อสิ่งเร้า หายใจ และเจริญเติบโตได้",
+                    "เป็นสิ่งไม่มีชีวิต (Non-living Entity) เพราะไม่สามารถเคลื่อนที่ย้ายถิ่นฐานได้เองอย่างอิสระ",
+                    "เป็นสารประกอบอินทรีย์ตามธรรมชาติเนื่องจากมีองค์ประกอบของธาตุคาร์บอน",
+                    "จัดเป็นโครงสร้างทางกายภาพที่ไม่จัดว่ามีชีวิตหรือไม่มีชีวิต"
+                ],
+                explanation: "ถูกต้อง! ปลาดังกล่าวหรือพืชน้ำจัดเป็นสิ่งมีชีวิตเนื่องจากมีลักษณะสำคัญของสิ่งมีชีวิตครบถ้วน เช่น มีการหายใจ เจริญเติบโต ตอบสนองต่อสิ่งเร้า และอาศัยในแหล่งน้ำจืดตามธรรมชาติ"
+            },
+            {
+                id: 2,
+                category: "สิ่งไม่มีชีวิตในระบบนิเวศบก",
+                baseQuestion: "ในการศึกษาองค์ประกอบของป่าดิบชื้น นักเรียนบันทึกข้อมูลปัจจัยทางกายภาพ ได้แก่ {element} ที่มีค่าเฉลี่ยต่อปีเท่ากับ {value} ปัจจัยนี้มีความสำคัญต่อการดำรงชีวิตอย่างไร?",
+                variables: [
+                    { element: "ปริมาณน้ำฝน", value: "2,400 มิลลิเมตร" },
+                    { element: "ความเข้มแสงเฉลี่ย", value: "45,005 ลักซ์" },
+                    { element: "ค่าความเป็นกรด-ด่างของดิน (pH)", value: "6.2" },
+                    { element: "อุณหภูมิอากาศเฉลี่ย", value: "27.5 °C" }
+                ],
+                correctOptionIndex: 1,
+                optionsTemplate: [
+                    "เป็นสิ่งมีชีวิตเซลล์เดียวขนาดเล็กที่ทำหน้าที่ย่อยสลายสารอินทรีย์",
+                    "เป็นสิ่งไม่มีชีวิต (Abiotic Factor) ที่เป็นปัจจัยสำคัญควบคุมการเจริญเติบโตของสิ่งมีชีวิต",
+                    "เป็นสิ่งมีชีวิตประเภทผู้ผลิตขั้นต้นที่สร้างอาหารเองได้ผ่านการสังเคราะห์ด้วยแสง",
+                    "จัดเป็นซากดึกดำบรรพ์ที่บ่งบอกประวัติศาสตร์ทางธรณีวิทยาของผืนป่า"
+                ],
+                explanation: "ถูกต้อง! ปัจจัยทางกายภาพ เช่น ปริมาณฝน อุณหภูมิ หรือค่า pH ของดิน จัดเป็น 'สิ่งไม่มีชีวิต' (Abiotic Factor) แต่มีความสำคัญยิ่งยวดต่อการอยู่รอดของสิ่งมีชีวิตในระบบนิเวศ"
+            },
+            {
+                id: 3,
+                category: "การปรับตัวของสิ่งมีชีวิตในทะเลทราย",
+                baseQuestion: "พิจารณาสิ่งมีชีวิตในเขตแห้งแล้ง เช่น {organism} ที่อาศัยในอุณหภูมิกลางวันสูงถึง {temp} °C โครงสร้างหรือกระบวนการใดสะท้อนว่าสิ่งมีชีวิตนี้มีความแตกต่างจากสิ่งไม่มีชีวิตอย่างชัดเจน?",
+                variables: [
+                    { organism: "ต้นกระบองเพชร (Cactus)", temp: 42 },
+                    { organism: "จิ้งจกทะเลทราย (Fennec Fox)", temp: 40 },
+                    { organism: "อูฐหนอกเดียว", temp: 45 },
+                    { organism: "แมงป่องทะเลทราย", temp: 41 }
+                ],
+                correctOptionIndex: 2,
+                optionsTemplate: [
+                    "มีโครงสร้างผลึกแร่ธาตุคงตัวที่ไม่เปลี่ยนแปลงรูปร่างตลอดอายุขัย",
+                    "ประกอบด้วยโมเลกุลอนินทรีย์ล้วน ๆ และสามารถสะสมพลังงานความร้อนได้ดี",
+                    "มีความสามารถในการรักษาดุลยภาพของร่างกาย (Homeostasis) และเมแทบอลิซึม",
+                    "ไม่ต้องการธาตุอาหารและน้ำเพื่อกระบวนการทางชีวเคมีภายในเซลล์"
+                ],
+                explanation: "ถูกต้อง! สิ่งมีชีวิตมีความสามารถในการรักษาดุลยภาพของร่างกาย (Homeostasis) มีเมแทบอลิซึม และเจริญเติบโตได้ ซึ่งแตกต่างจากสิ่งไม่มีชีวิต"
+            },
+            {
+                id: 4,
+                category: "ความสัมพันธ์ระหว่างสิ่งมีชีวิตกับสิ่งไม่มีชีวิต",
+                baseQuestion: "ในระบบนิเวศแอ่งน้ำเค็ม มีการแลกเปลี่ยนก๊าซ {gas} ระหว่างบรรยากาศและน้ำทะเลที่มีความเค็ม {salinity} PSU ข้อใดสรุปสถานะของก๊าซดังกล่าวได้ถูกต้องตามหลักชีววิทยา?",
+                variables: [
+                    { gas: "ออกซิเจน (O₂)", salinity: "35" },
+                    { gas: "คาร์บอนไดออกไซด์ (CO₂)", salinity: "34" },
+                    { gas: "ไนโตรเจน (N₂)", salinity: "36" },
+                    { gas: "ไอน้ำ (H₂O)", salinity: "33" }
+                ],
+                correctOptionIndex: 3,
+                optionsTemplate: [
+                    "เป็นสิ่งมีชีวิตขนาดเล็กที่มองไม่ด้วยตาเปล่าในน้ำทะเล",
+                    "จัดเป็นเซลล์สืบพันธุ์ของแพลงก์ตอนพืชในแหล่งน้ำเค็ม",
+                    "เป็นสิ่งมีชีวิตกลุ่มผู้บริโภคอันดับสูงสุดในสายใยอาหาร",
+                    "เป็นสิ่งไม่มีชีวิตประเภทสารอนินทรีย์ที่สิ่งมีชีวิตต้องนำไปใช้ในกระบวนการหายใจหรือสังเคราะห์แสง"
+                ],
+                explanation: "ถูกต้อง! ก๊าซต่างๆ เช่น ออกซิเจนหรือคาร์บอนไดออกไซด์ จัดเป็นสารอนินทรีย์ (สิ่งไม่มีชีวิต) ซึ่งเป็นองค์ประกอบสำคัญในวัฏจักรชีวเคมีที่สิ่งมีชีวิตต้องใช้"
+            },
+            {
+                id: 5,
+                category: "เกณฑ์การจำแนกสิ่งมีชีวิตและไม่มีชีวิต",
+                baseQuestion: "หินงอกหินย้อยในถ้ำมีการเจริญเติบโตและเพิ่มขนาดได้ทีละน้อยตามกาลเวลา แต่เหตุผลใดที่ทำให้หินงอกหินย้อยจัดเป็น 'สิ่งไม่มีชีวิต'?",
+                variables: [
+                    { organism: "หินปูน (Calcium Carbonate)", temp: 20 },
+                    { organism: "ผลึกแร่แคลไซต์", temp: 22 },
+                    { organism: "หินงอกในถ้ำมืด", temp: 19 },
+                    { organism: "หินย้อยสะสมแร่ธาตุ", temp: 21 }
+                ],
+                correctOptionIndex: 1,
+                optionsTemplate: [
+                    "เพราะไม่มีอุณหภูมิร่างกายเท่ากับสภาพแวดล้อมรอบข้าง",
+                    "เพราะเป็นการพอกพูนของสารอนินทรีย์จากภายนอก ไม่ได้เกิดจากกระบวนการเมแทบอลิซึมภายในเซลล์",
+                    "เพราะมีอัตราการขยายขนาดช้าเกินไปเมื่อเทียบกับพืชหรือสัตว์",
+                    "เพราะไม่สามารถทำปฏิกิริยากับน้ำในถ้ำได้"
+                ],
+                explanation: "ถูกต้อง! การเพิ่มขนาดของหินเกิดจากการพอกพูนของสารอนินทรีย์ (Accretion) จากภายนอก ไม่ได้เกิดจากการแบ่งเซลล์หรือเมแทบอลิซึมภายในสิ่งมีชีวิต จึงจัดเป็นสิ่งไม่มีชีวิต"
+            }
+        ];
+
+        let currentStudentId = 1;
+        let generatedQuestions = [];
+        let userAnswers = {};
+        let currentQuestionIndex = 0;
+
+        // ฟังก์ชันสร้างชุดโจทย์เฉพาะเลขที่นักเรียนโดยใช้ Seeded PRNG
+        function generateQuizForStudent(studentId) {
+            const seed = parseInt(studentId) * 12345 + 6789;
+            const rng = mulberry32(seed);
+            
+            return questionTemplates.map((template, qIdx) => {
+                // สุ่มตัวแปรเงื่อนไขตามเลขที่
+                const varIndex = Math.floor(rng() * template.variables.length);
+                const selectedVar = template.variables[varIndex];
+
+                // แทนที่ตัวแปรในข้อความคำถาม
+                let qText = template.baseQuestion
+                    .replace("{organism}", selectedVar.organism)
+                    .replace("{temp}", selectedVar.temp)
+                    .replace("{element}", selectedVar.element)
+                    .replace("{value}", selectedVar.value)
+                    .replace("{gas}", selectedVar.gas)
+                    .replace("{salinity}", selectedVar.salinity);
+
+                // สุ่มสลับตำแหน่งตัวเลือก (Options) พร้อมเก็บบันทึกเฉลยที่ถูกต้อง
+                let optionsWithMeta = template.optionsTemplate.map((opt, idx) => ({
+                    text: opt,
+                    isCorrect: idx === template.correctOptionIndex
+                }));
+
+                // Fisher-Yates shuffle with seeded rng
+                for (let i = optionsWithMeta.length - 1; i > 0; i--) {
+                    const j = Math.floor(rng() * (i + 1));
+                    [optionsWithMeta[i], optionsWithMeta[j]] = [optionsWithMeta[j], optionsWithMeta[i]];
+                }
+
+                // หาตำแหน่งใหม่ของข้อที่ถูกต้อง
+                const newCorrectIndex = optionsWithMeta.findIndex(o => o.isCorrect);
+
+                return {
+                    id: template.id,
+                    category: template.category,
+                    question: qText,
+                    options: optionsWithMeta.map(o => o.text),
+                    correctIndex: newCorrectIndex,
+                    explanation: template.explanation
+                };
+            });
+        }
+
+        // จัดการเหตุการณ์เมื่อนักเรียนกดเริ่มทำกิจกรรม
+        function handleLogin(event) {
+            event.preventDefault();
+            const inputVal = document.getElementById('student-id-input').value;
+            const id = parseInt(inputVal);
+
+            if (isNaN(id) || id < 1 || id > 40) {
+                showNotification("กรุณากรอกเลขที่นักเรียนให้อยู่ในช่วง 1 ถึง 40");
+                return;
+            }
+
+            currentStudentId = id;
+            generatedQuestions = generateQuizForStudent(currentStudentId);
+            userAnswers = {};
+            currentQuestionIndex = 0;
+
+            document.getElementById('student-badge').textContent = `เลขที่: ${currentStudentId}`;
+            
+            // สลับหน้าจอ
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-result').classList.add('hidden');
+            document.getElementById('view-quiz').classList.remove('hidden');
+
+            renderQuestion();
+        }
+
+        // แสดงผลคำถามปัจจุบัน
+        function renderQuestion() {
+            const q = generatedQuestions[currentQuestionIndex];
+            
+            document.getElementById('quiz-progress-text').textContent = `ข้อที่ ${currentQuestionIndex + 1} จาก ${generatedQuestions.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentQuestionIndex + 1) / generatedQuestions.length) * 100}%`;
+            
+            document.getElementById('question-category').textContent = q.category;
+            document.getElementById('question-title').textContent = q.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const optionLetters = ['ก', 'ข', 'ค', 'ง'];
+
+            q.options.forEach((optText, idx) => {
+                const isSelected = userAnswers[currentQuestionIndex] === idx;
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = `w-full text-left p-4 rounded-xl border transition flex items-start gap-3 ${
+                    isSelected 
+                        ? 'border-emerald-600 bg-emerald-50/70 text-emerald-900 font-medium shadow-sm' 
+                        : 'border-slate-200 hover:border-slate-300 bg-white text-slate-700'
+                }`;
+                
+                button.innerHTML = `
+                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg shrink-0 text-sm font-bold ${
+                        isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'
+                    }">${optionLetters[idx]}</span>
+                    <span class="mt-0.5">${optText}</span>
+                `;
+                
+                button.onclick = () => selectOption(idx);
+                optionsContainer.appendChild(button);
+            });
+
+            // อัปเดตปุ่มย้อนกลับ/ถัดไป/ส่งคำตอบ
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            
+            btnPrev.disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === generatedQuestions.length - 1) {
+                btnNext.textContent = 'ตรวจ/ส่งคำตอบ';
+                btnNext.className = 'bg-teal-600 hover:bg-teal-700 text-white font-medium px-6 py-2 rounded-lg text-sm shadow-md shadow-teal-600/20 transition';
+            } else {
+                btnNext.textContent = 'ถัดไป';
+                btnNext.className = 'bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2 rounded-lg text-sm shadow-md shadow-emerald-600/20 transition';
+            }
+        }
+
+        // เลือกตัวเลือก
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            renderQuestion();
+        }
+
+        // ปุ่มถัดไป / ส่งคำตอบ
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                showNotification("กรุณาเลือกคำตอบก่อนไปยังข้อถัดไปครับ");
+                return;
+            }
+
+            if (currentQuestionIndex < generatedQuestions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        // ปุ่มย้อนกลับ
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        // คำนวณและแสดงผลลัพธ์
+        function showResult() {
+            let score = 0;
+            generatedQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correctIndex) {
+                    score++;
+                }
+            });
+
+            document.getElementById('score-val').textContent = score;
+            document.getElementById('result-student-info').textContent = `นักเรียนเลขที่: ${currentStudentId} (ชุดโจทย์เฉพาะบุคคล)`;
+
+            const emojiEl = document.getElementById('result-emoji');
+            if (score === 5) emojiEl.textContent = "🏆";
+            else if (score >= 3) emojiEl.textContent = "🌟";
+            else emojiEl.textContent = "💪";
+
+            // สร้างรีวิวเฉลยละเอียด
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            const optionLetters = ['ก', 'ข', 'ค', 'ง'];
+
+            generatedQuestions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.correctIndex;
+
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50/50 border-emerald-200' : 'bg-rose-50/50 border-rose-200'}`;
+                
+                let html = `
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                        <span class="text-xs font-bold px-2 py-0.5 rounded ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ข้อที่ ${idx + 1}: ${isCorrect ? 'ตอบถูก' : 'ตอบผิด'}
+                        </span>
+                        <span class="text-xs text-slate-500">${q.category}</span>
+                    </div>
+                    <div class="text-sm font-bold text-slate-800 mb-2">${q.question}</div>
+                    <div class="text-xs space-y-1 mb-2">
+                        <div class="${userAns === q.correctIndex ? 'text-emerald-700 font-semibold' : 'text-rose-600 line-through'}">
+                            คำตอบของคุณ: ${userAns !== undefined ? optionLetters[userAns] + '. ' + q.options[userAns] : 'ไม่ได้ตอบ'}
+                        </div>
+                `;
+
+                if (!isCorrect) {
+                    html += `<div class="text-emerald-700 font-semibold">คำตอบที่ถูกต้อง: ${optionLetters[q.correctIndex]}. ${q.options[q.correctIndex]}</div>`;
+                }
+
+                html += `
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-slate-200/60 text-xs text-slate-600 bg-white/60 p-2.5 rounded-lg">
+                        <strong>คำอธิบาย:</strong> ${q.explanation}
+                    </div>
+                `;
+
+                card.innerHTML = html;
+                reviewContainer.appendChild(card);
+            });
+
+            // สลับหน้าจอ
+            document.getElementById('view-quiz').classList.add('hidden');
+            document.getElementById('view-result').classList.remove('hidden');
+        }
+
+        // เริ่มทำใหม่
+        function restartQuiz() {
+            document.getElementById('view-result').classList.add('hidden');
+            document.getElementById('view-login').classList.remove('hidden');
+            document.getElementById('student-id-input').value = '';
+        }
+
+        // จัดการ Modal โหมดครู
+        function openTeacherModal() {
+            document.getElementById('teacher-modal').classList.remove('hidden');
+            document.getElementById('teacher-inspect-id').value = currentStudentId;
+            inspectStudentQuiz();
+        }
+
+        function closeTeacherModal() {
+            document.getElementById('teacher-modal').classList.add('hidden');
+        }
+
+        // ตรวจสอบโจทย์ของเลขที่ใด ๆ ในโหมดครู
+        function inspectStudentQuiz() {
+            const idInput = document.getElementById('teacher-inspect-id');
+            let id = parseInt(idInput.value);
+            if (isNaN(id) || id < 1 || id > 40) id = 1;
+
+            const questions = generateQuizForStudent(id);
+            const container = document.getElementById('teacher-preview-content');
+            container.innerHTML = `<div class="text-xs font-bold text-emerald-800 bg-emerald-50 p-2 rounded">กำลังแสดงชุดข้อสอบและเฉลยสำหรับ: เลขที่ ${id}</div>`;
+
+            const optionLetters = ['ก', 'ข', 'ค', 'ง'];
+
+            questions.forEach((q, idx) => {
+                const box = document.createElement('div');
+                box.className = 'p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2';
+                
+                let optionsHtml = q.options.map((opt, oIdx) => {
+                    const isCorrect = oIdx === q.correctIndex;
+                    return `<div class="${isCorrect ? 'text-emerald-700 font-bold bg-emerald-100/50 p-1.5 rounded border border-emerald-200' : 'text-slate-600 p-1'}">
+                        ${optionLetters[oIdx]}. ${opt} ${isCorrect ? ' ✓ (เฉลย)' : ''}
+                    </div>`;
+                }).join('');
+
+                box.innerHTML = `
+                    <div class="font-bold text-slate-800">ข้อที่ ${idx + 1} [${q.category}]</div>
+                    <div class="text-slate-700">${q.question}</div>
+                    <div class="space-y-1 mt-2">${optionsHtml}</div>
+                    <div class="mt-2 pt-2 border-t border-slate-200 text-slate-500"><strong>แนวคิด/เหตุผล:</strong> ${q.explanation}</div>
+                `;
+                container.appendChild(box);
+            });
+        }
+
+        // ฟังก์ชันแสดงข้อความแจ้งเตือนแทน alert() ตามข้อกำหนด
+        function showNotification(msg) {
+            // สร้าง Notification กลางจอแบบสวยงาม
+            const existing = document.getElementById('custom-notification');
+            if (existing) existing.remove();
+
+            const notif = document.createElement('div');
+            notif.id = 'custom-notification';
+            notif.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl z-50 text-sm font-medium flex items-center gap-3 transition-all animate-bounce';
+            notif.innerHTML = `
+                <span>⚠️</span>
+                <span>${msg}</span>
+            `;
+            document.body.appendChild(notif);
+
+            setTimeout(() => {
+                notif.style.opacity = '0';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
